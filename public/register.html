@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>新規登録 - DXPRO SOLUTIONS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-green-50 to-gray-50 min-h-screen flex items-center justify-center p-4">
+
+  <div class="bg-white shadow-lg rounded-2xl p-8 w-full max-w-3xl">
+    <h2 class="text-3xl font-bold text-green-700 text-center mb-6">新規登録</h2>
+
+    <form action="/register" method="post" class="space-y-4" id="registerForm">
+      <!-- 基本情報 -->
+      <input type="text" name="username" placeholder="ユーザー名" required
+        class="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+      <input type="password" name="password" placeholder="パスワード" required
+        class="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+
+      <!-- 名前 -->
+      <div class="grid grid-cols-2 gap-4">
+        <input type="text" name="lastName" placeholder="姓" required
+          class="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+        <input type="text" name="firstName" placeholder="名" required
+          class="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+      </div>
+
+      <!-- ふりがな -->
+      <div class="grid grid-cols-2 gap-4">
+        <input type="text" name="hurilastName" placeholder="姓（フリガナ）" required
+          class="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+        <input type="text" name="hurifirstName" placeholder="名（フリガナ）" required
+          class="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+      </div>
+
+      <!-- 生年月日 -->
+      <input type="date" name="birthdate" placeholder="生年月日" required
+        class="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+
+      <!-- 応募区分 -->
+      <div class="mt-2">
+        <span class="text-gray-700 font-medium">応募区分</span>
+        <div class="flex space-x-4 mt-1">
+          <label class="inline-flex items-center">
+            <input type="radio" name="employmentType" value="newGrad" class="text-green-600" required>
+            <span class="ml-2">新卒</span>
+          </label>
+          <label class="inline-flex items-center">
+            <input type="radio" name="employmentType" value="midCareer" class="text-green-600">
+            <span class="ml-2">中途</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- 新卒用 -->
+      <div id="newGradFields" class="space-y-2 hidden mt-2">
+        <input type="text" name="graduationSchool" placeholder="例）卒業予定学校名：白石大学"
+          class="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+        <input type="month" name="expectedGraduation" placeholder="例）卒業予定年月：2025/09"
+          class="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+      </div>
+
+      <!-- 中途用 -->
+      <div id="midCareerFields" class="space-y-2 hidden mt-2">
+        <label class="flex items-center space-x-2">
+          <input type="checkbox" name="hasCurrentJob" id="hasCurrentJob" class="text-green-600">
+          <span>現職がある</span>
+        </label>
+        <div id="currentJobFields" class="space-y-2 hidden">
+        <span>退職予定日</span>
+          <input type="date" name="expectedResignation" placeholder="退職予定日"
+            class="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400"><br>
+        <span>入社希望日</span>
+          <input type="date" name="desiredJoinDate" placeholder="入社希望日"
+            class="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400"><br>
+        </div>
+      </div>
+
+      <!-- メール・電話 -->
+      <input type="email" name="email" placeholder="メールアドレス" required
+        class="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+      <input type="tel" name="phone" placeholder="例: 080-0000-1111" required
+        class="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+
+      <!-- 同意 -->
+      <label class="inline-flex items-center mt-2">
+        <input type="checkbox" name="consent" required class="form-checkbox text-green-600">
+        <span class="ml-2 text-gray-700">利用規約に同意する</span>
+      </label>
+
+      <button type="submit"
+        class="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 transition">
+        登録
+      </button>
+    </form>
+
+    <p class="text-center mt-4 text-gray-600">
+      既にアカウントをお持ちの方は
+      <a href="/login.html" class="text-green-600 hover:underline">ログイン</a>
+    </p>
+  </div>
+
+  <script>
+    const newGradFields = document.getElementById("newGradFields");
+    const midCareerFields = document.getElementById("midCareerFields");
+    const hasCurrentJob = document.getElementById("hasCurrentJob");
+    const currentJobFields = document.getElementById("currentJobFields");
+
+    // 新卒/中途切替
+    document.querySelectorAll('input[name="employmentType"]').forEach(radio => {
+      radio.addEventListener("change", () => {
+        if(radio.value === "newGrad") {
+          newGradFields.classList.remove("hidden");
+          midCareerFields.classList.add("hidden");
+        } else {
+          midCareerFields.classList.remove("hidden");
+          newGradFields.classList.add("hidden");
+        }
+      });
+    });
+
+    // 現職チェックで退職予定日・入社希望日表示
+    hasCurrentJob.addEventListener("change", () => {
+      if(hasCurrentJob.checked){
+        currentJobFields.classList.remove("hidden");
+      } else {
+        currentJobFields.classList.add("hidden");
+      }
+    });
+  </script>
+
+</body>
+</html>

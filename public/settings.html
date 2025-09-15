@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+  <meta charset="UTF-8">
+  <title>設定 | DXPRO SOLUTIONS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col items-center pt-10 space-y-8">
+
+  <!-- 基本情報 -->
+  <div class="bg-white shadow-lg rounded-2xl p-8 w-full max-w-3xl">
+    <h1 class="text-3xl font-bold mb-6">アカウント設定</h1>
+
+    <div id="alertBox" class="hidden mb-4 p-3 rounded-lg text-white font-medium"></div>
+
+    <form id="settingsForm" class="space-y-4">
+      <div>
+        <label class="block mb-1">ユーザー名</label>
+        <input type="text" name="username" class="w-full border rounded px-3 py-2" required>
+      </div>
+
+      <div>
+        <label class="block mb-1">メールアドレス</label>
+        <input type="email" name="email" class="w-full border rounded px-3 py-2" required>
+      </div>
+
+      <div>
+        <label class="block mb-1">電話番号</label>
+        <input type="tel" name="phone" class="w-full border rounded px-3 py-2" required>
+      </div>
+
+      <div>
+        <label class="block mb-1">パスワード変更</label>
+        <input type="password" name="password" class="w-full border rounded px-3 py-2" placeholder="新しいパスワード">
+        <input type="password" name="passwordConfirm" class="w-full border rounded px-3 py-2 mt-2" placeholder="確認用パスワード">
+        <p class="text-sm text-gray-500 mt-1">変更する場合のみ入力してください</p>
+      </div>
+
+      <div class="w-full max-w-3xl mt-4">
+        <button type="submit" class="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 transition">
+          保存
+        </button>
+      </div>      
+    </form>
+  </div>
+
+  <!-- 応募設定 -->
+  <div class="bg-white shadow-lg rounded-2xl p-8 w-full max-w-3xl">
+    <h1 class="text-3xl font-bold mb-6">応募設定</h1>
+    
+    <form id="applyForm" class="space-y-4">
+      <div>
+        <span class="block mb-1">応募区分</span>
+        <label class="inline-flex items-center mr-4">
+          <input type="radio" name="employmentType" value="newGrad" class="text-green-600">
+          <span class="ml-2">新卒</span>
+        </label>
+        <label class="inline-flex items-center">
+          <input type="radio" name="employmentType" value="midCareer" class="text-green-600">
+          <span class="ml-2">中途</span>
+        </label>
+      </div>
+
+      <!-- 新卒 -->
+      <div id="newGradFields" class="hidden">
+        <input type="text" name="graduationSchool" placeholder="卒業予定学校名" class="w-full border rounded px-3 py-2 mt-2">
+        <input type="month" name="expectedGraduation" placeholder="卒業予定年月" class="w-full border rounded px-3 py-2 mt-2">
+      </div>
+
+      <!-- 中途 -->
+      <div id="midCareerFields" class="hidden">
+        <label class="flex items-center space-x-2 mt-2">
+          <input type="checkbox" name="hasCurrentJob" id="hasCurrentJob" class="text-green-600">
+          <span>現職がある</span>
+        </label>
+        <div id="currentJobFields" class="hidden">
+          <span>退職予定日</span>
+          <input type="date" name="expectedResignation" class="w-full border rounded px-3 py-2 mt-2">
+          <span>入社希望日</span>
+          <input type="date" name="desiredJoinDate" class="w-full border rounded px-3 py-2 mt-2">
+        </div>
+      </div>
+        <!-- ホーム戻る -->
+      <div class="w-full max-w-3xl">
+
+          <button type="submit" class="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 transition">
+            保存
+          </button><br><br>
+        <a href="/index.html"
+          class="block text-center bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition shadow-md">
+          ホームに戻る
+        </a>
+      </div>
+    </form>
+  </div>
+
+
+<script>
+async function loadUser() {
+  try {
+    const res = await fetch("/api/user/me");
+    if (!res.ok) throw new Error("ユーザー情報取得失敗");
+    const data = await res.json();
+    const user = data.user;
+
+    document.querySelector('[name="username"]').value = user.username;
+    document.querySelector('[name="email"]').value = user.email;
+    document.querySelector('[name="phone"]').value = user.phone;
+
+    document.querySelector(`[name="employmentType"][value="${user.employmentType}"]`).checked = true;
+
+    if(user.employmentType === "newGrad") {
+      document.getElementById("newGradFields").classList.remove("hidden");
+      document.getElementById("midCareerFields").classList.add("hidden");
+      document.querySelector('[name="graduationSchool"]').value = user.graduationSchool || "";
+      document.querySelector('[name="expectedGraduation"]').value = user.expectedGraduation || "";
+    } else {
+      document.getElementById("midCareerFields").classList.remove("hidden");
+      document.getElementById("newGradFields").classList.add("hidden");
+      document.getElementById("hasCurrentJob").checked = user.hasCurrentJob || false;
+      if(user.hasCurrentJob){
+        document.getElementById("currentJobFields").classList.remove("hidden");
+        document.querySelector('[name="expectedResignation"]').value = user.expectedResignation ? user.expectedResignation.split("T")[0] : "";
+        document.querySelector('[name="desiredJoinDate"]').value = user.desiredJoinDate ? user.desiredJoinDate.split("T")[0] : "";
+      }
+    }
+
+  } catch(e){
+    console.error(e);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadUser();
+
+  const alertBox = document.getElementById("alertBox");
+
+  // アカウント設定フォーム送信
+document.getElementById("settingsForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const form = e.target;
+  const formData = new FormData(form);
+  const body = {};
+  formData.forEach((v,k)=>body[k]=v);
+
+  // 비밀번호 일치 체크
+  if(body.password && body.password !== body.passwordConfirm){
+    alert("パスワードが一致しません");
+    return;
+  }
+
+  // 확인용 필드는 서버로 보내지 않도록 제거
+  delete body.passwordConfirm;
+
+  try {
+    const res = await fetch("/api/user/account", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body)
+    });
+    const data = await res.json();
+    const alertBox = document.getElementById("alertBox");
+    if(data.status === "success"){
+      alertBox.textContent = "✅ アカウント情報を更新しました";
+      alertBox.className = "mb-4 p-3 rounded-lg font-medium text-white bg-green-500";
+    } else {
+      alertBox.textContent = "❌ 更新に失敗しました";
+      alertBox.className = "mb-4 p-3 rounded-lg font-medium text-white bg-red-500";
+    }
+    alertBox.classList.remove("hidden");
+    setTimeout(()=>alertBox.classList.add("hidden"), 3000);
+  } catch(err) {
+    console.error(err);
+    alert("サーバーエラーが発生しました");
+  }
+});
+
+  // 応募設定フォーム送信
+  document.getElementById("applyForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const body = {};
+    formData.forEach((v,k)=>body[k]=v);
+
+    try {
+      const res = await fetch("/api/user/apply", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+      const data = await res.json();
+      alert(data.message || "✅ 応募設定を更新しました");
+    } catch(err) {
+      console.error(err);
+      alert("サーバーエラーが発生しました");
+    }
+  });
+
+  // 雇用種別変更時の表示切替
+  document.querySelectorAll('[name="employmentType"]').forEach(el=>{
+    el.addEventListener("change", e=>{
+      if(e.target.value === "newGrad"){
+        document.getElementById("newGradFields").classList.remove("hidden");
+        document.getElementById("midCareerFields").classList.add("hidden");
+      } else {
+        document.getElementById("midCareerFields").classList.remove("hidden");
+        document.getElementById("newGradFields").classList.add("hidden");
+      }
+    });
+  });
+
+  document.getElementById("hasCurrentJob").addEventListener("change", e=>{
+    document.getElementById("currentJobFields").classList.toggle("hidden", !e.target.checked);
+  });
+});
+
+</script>
+</body>
+</html>

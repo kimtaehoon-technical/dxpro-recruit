@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>経験者採用 - DXPRO SOLUTIONS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #10b981;
+      box-shadow: 0 0 0 2px rgba(16,185,129,0.3);
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-b from-green-50 to-gray-50 min-h-screen flex flex-col items-center p-6">
+
+<header class="text-center mb-10">
+  <h1 class="text-4xl font-extrabold text-green-600 mb-2">中途採用</h1><br>
+  <a href="/index.html" class="text-green-500 hover:underline">ホームに戻る</a>
+</header>
+
+<main class="w-full max-w-5xl space-y-12">
+  <form id="careerForm" enctype="multipart/form-data" class="space-y-8">
+
+    <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-200">
+      <h2 class="text-2xl font-semibold text-green-700 mb-6 flex items-center gap-2">基本情報</h2>
+      <div class="grid grid-cols-2 gap-4">
+        <label>
+          <span class="text-gray-600 font-medium">姓</span>
+          <input type="text" name="lastName" required class="mt-1 border rounded-lg p-3 w-full shadow-sm" placeholder="例: 見本">
+        </label>
+        <label>
+          <span class="text-gray-600 font-medium">名</span>
+          <input type="text" name="firstName" required class="mt-1 border rounded-lg p-3 w-full shadow-sm" placeholder="例: 太郎">
+        </label>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <label>
+          <span class="text-gray-600 font-medium">フリガナ（性）</span>
+          <input type="text" name="hurilastName" required class="mt-1 border rounded-lg p-3 w-full shadow-sm" placeholder="例: ミホン">
+        </label>
+        <label>
+          <span class="text-gray-600 font-medium">フリガナ（名）</span>
+          <input type="text" name="hurifirstName" required class="mt-1 border rounded-lg p-3 w-full shadow-sm" placeholder="例: タロウ">
+        </label>
+      </div>
+      <div class="grid grid-cols-2 gap-4 mt-4">
+        <label>
+          <span class="text-gray-600 font-medium">生年月日</span>
+          <input type="date" name="birthdate" class="mt-1 border rounded-lg p-3 w-full shadow-sm">
+        </label>
+        <label>
+          <span class="text-gray-600 font-medium">電話番号</span>
+          <input type="tel" name="phone" required class="mt-1 border rounded-lg p-3 w-full shadow-sm" placeholder="例: 080-0000-1111">
+        </label>
+      </div>
+      <div class="mt-4">
+        <span class="text-gray-600 font-medium">性別</span>
+        <div class="mt-2 flex space-x-6">
+          <label class="inline-flex items-center">
+            <input type="radio" name="gender" value="男性" class="text-blue-600" required>
+            <span class="ml-2">男性</span>
+          </label>
+          <label class="inline-flex items-center">
+            <input type="radio" name="gender" value="女性" class="text-blue-600">
+            <span class="ml-2">女性</span>
+          </label>
+        </div>
+      </div>
+      <label class="block mt-4">
+        <span class="text-gray-600 font-medium">メールアドレス</span>
+        <input type="email" name="email" required class="mt-1 border rounded-lg p-3 w-full shadow-sm" placeholder="例: xxxx@gmail.com">
+      </label>
+    </div>
+
+    <!-- 住所 -->
+    <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-200">
+      <h2 class="text-2xl font-semibold text-green-700 mb-6 flex items-center gap-2">住所</h2>
+      <div id="jpAddressFields" class="space-y-3">
+        <label class="block">
+          <span class="text-gray-600 font-medium">郵便番号</span>
+          <input type="text" id="postalCode" name="postalCode" placeholder="例: 1000001" maxlength="7"
+                 class="mt-1 border rounded-lg p-3 w-full shadow-sm">
+        </label>
+        <label class="block">
+          <span class="text-gray-600 font-medium">都道府県</span>
+          <input type="text" id="prefecture" name="prefecture" class="mt-1 border rounded-lg p-3 w-full shadow-sm">
+        </label>
+        <label class="block">
+          <span class="text-gray-600 font-medium">市区町村・番地</span>
+          <input type="text" id="city" name="city" class="mt-1 border rounded-lg p-3 w-full shadow-sm">
+        </label>
+        <label class="block">
+          <span class="text-gray-600 font-medium">建物名・部屋番号 (任意)</span>
+          <input type="text" name="addressDetail" class="mt-1 border rounded-lg p-3 w-full shadow-sm">
+        </label>
+      </div>
+      <label class="inline-flex items-center space-x-2 mt-4">
+        <input type="checkbox" id="noAddress" name="noAddress" class="form-checkbox h-5 w-5 text-blue-600">
+        <span class="text-gray-600 text-sm">日本国内住所がありません</span>
+      </label>
+    </div>
+
+    <!-- 学歴 -->
+    <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-200">
+      <h2 class="text-2xl font-semibold text-green-700 mb-6 flex items-center gap-2">学歴</h2>
+      <label class="block">
+        <span class="text-gray-600 font-medium">最終学歴</span>
+        <select name="education" class="mt-1 border rounded-lg p-3 w-full shadow-sm">
+          <option value="">選択してください</option>
+          <option value="高卒">高卒</option>
+          <option value="専門卒">専門卒</option>
+          <option value="大卒">大卒</option>
+          <option value="大学院卒">大学院卒</option>
+        </select>
+      </label>
+      <label class="block mt-4">
+        <span class="text-gray-600 font-medium">学校名 / 専攻</span>
+        <input type="text" name="major" class="mt-1 border rounded-lg p-3 w-full shadow-sm">
+      </label>
+      <label class="block mt-4">
+        <span class="text-gray-600 font-medium">卒業予定 / 卒業年月</span>
+        <input type="month" name="graduation" class="mt-1 border rounded-lg p-3 w-full shadow-sm" placeholder="例: 2025年3月">
+      </label>
+    </div>
+
+    <!-- 現職情報 -->
+    <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-200">
+      <h2 class="text-2xl font-semibold text-green-700 mb-6 flex items-center gap-2">現職情報</h2>
+      <label class="block">
+        <span class="text-gray-600 font-medium">現職会社名</span>
+        <input type="text" name="currentCompany" class="mt-1 border rounded-lg p-3 w-full shadow-sm">
+      </label>
+      <label class="block mt-4">
+        <span class="text-gray-600 font-medium">現職の役職・職種</span>
+        <input type="text" name="currentPosition" class="mt-1 border rounded-lg p-3 w-full shadow-sm">
+      </label>
+      <label class="block mt-4">
+        <span class="text-gray-600 font-medium">主な業務内容</span>
+        <textarea name="currentJobDescription" rows="3" class="mt-1 border rounded-lg p-3 w-full shadow-sm"></textarea>
+      </label>
+      <label class="block mt-4">
+        <span class="text-gray-600 font-medium">勤続年数</span>
+        <input type="number" name="experienceYears" class="mt-1 border rounded-lg p-3 w-full shadow-sm" placeholder="例: 3" min="0">
+      </label>
+    </div>
+
+    <!-- 希望条件 -->
+    <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-200">
+      <h2 class="text-2xl font-semibold text-green-700 mb-6 flex items-center gap-2">希望条件</h2>
+      <label class="block">
+        <span class="text-gray-600 font-medium">希望ポジション</span>
+        <select name="position" required class="mt-1 border rounded-lg p-3 w-full shadow-sm">
+          <option value="">選択してください</option>
+          <option value="frontend">フロントエンド</option>
+          <option value="backend">バックエンド</option>
+          <option value="designer">UIデザイナー</option>
+          <option value="pm">プロジェクトマネージャー</option>
+          <option value="consultant">コンサルタント</option>
+          <option value="qaengineer">QAエンジニア</option>
+        </select>
+      </label>
+      <label class="block mt-4">
+        <span class="text-gray-600 font-medium">希望勤務形態</span>
+        <select name="locationPreference" class="mt-1 border rounded-lg p-3 w-full shadow-sm">
+          <option value="">選択してください</option>
+          <option value="出社">出社</option>
+          <option value="リモート">リモート</option>
+        </select>
+      </label>
+      <label class="block mt-4">
+        <span class="text-gray-600 font-medium">希望年収</span>
+        <input type="text" name="gold" class="mt-1 border rounded-lg p-3 w-full shadow-sm" placeholder="例: 500万円">
+      </label>
+    </div>
+
+    <!-- 書類提出 -->
+    <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-200">
+      <h2 class="text-2xl font-semibold text-green-700 mb-6 flex items-center gap-2">書類提出</h2>
+      <label class="block">
+        <span class="text-gray-600 font-medium">職務経歴書</span>
+        <input type="file" name="career" required class="mt-1 w-full">
+      </label>
+      <label class="block mt-4">
+        <span class="text-gray-600 font-medium">履歴書</span>
+        <input type="file" name="resume" required class="mt-1 w-full">
+      </label>
+      <label class="block mt-4">
+        <span class="text-gray-600 font-medium">ポートフォリオ</span>
+        <input type="file" name="portfolioFiles" multiple class="mt-1 w-full">
+        <button type="button" id="noPortfolioCareer" class="mt-2 bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500 transition">ファイル無し</button>
+      </label>
+      <label class="block mt-4">
+        <span class="text-gray-600 font-medium">GitHub / ポートフォリオ URL</span>
+        <input type="url" name="portfolio" class="mt-1 border rounded-lg p-3 w-full shadow-sm" placeholder="例: https://www.github.com/XXXXXX">
+      </label>
+    </div>
+
+    <!-- 自己PR -->
+    <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-200">
+      <h2 class="text-2xl font-semibold text-green-700 mb-6 flex items-center gap-2">自己PR</h2>
+      <label class="block">
+        <span class="text-gray-600 font-medium">自己紹介・志望動機</span>
+        <textarea name="pr" rows="4" class="mt-1 border rounded-lg p-3 w-full shadow-sm"></textarea>
+      </label>
+      <label class="block mt-4">
+        <span class="text-gray-600 font-medium">転職理由</span>
+        <textarea name="changeReason" rows="3" class="mt-1 border rounded-lg p-3 w-full shadow-sm"></textarea>
+      </label>
+      <label class="block mt-4">
+        <span class="text-gray-600 font-medium">希望入社時期</span>
+        <select name="desiredJoinDate" class="mt-1 border rounded-lg p-3 w-full shadow-sm">
+          <option value="">選択してください</option>
+          <option value="即日">即日</option>
+          <option value="１ヶ月以内">１ヶ月以内</option>
+          <option value="２ヶ月以内">２ヶ月以内</option>
+        </select>
+      </label>
+    </div>
+    <div class="p-6 rounded-2xl shadow-md border border-gray-200 text-center">
+    <label class="inline-flex items-center justify-center gap-3">
+        <input type="checkbox" name="consent" value="true" required 
+            class="w-6 h-6 text-blue-700">
+        <span class="text-gray-700 text-lg font-semibold">
+        上記内容は事実と相違ございません。
+        </span>
+    </label>
+    </div>
+    <!-- 同意 & 送信 -->
+    <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-200 text-center">
+  <div class="border rounded-lg p-4 mb-4 h-64 overflow-y-auto text-left text-sm text-gray-700">
+    <p>DXPRO SOLUTIONS（以下「当社」）は、以下のとおり個人情報保護方針を定め、個人情報保護の仕組みを構築し、個人情報の保護を推進・実施致します。</p>
+    <br><h4 class="font-semibold mt-2">個人情報の管理</h4>
+    <p>当社はお客さまからお預かりする個人情報について、個人情報への不正アクセス・紛失・破損・改ざん・漏洩などを防止するため、セキュリティシステムの維持・管理体制の整備等の必要な措置を講じ、厳重な管理を行ないます。</p>
+    <br><h4 class="font-semibold mt-2">個人情報の利用目的</h4>
+    <p>当社がお預かりする個人情報は、当サービスのご利用とご提供に伴う以下の目的のために利用いたします。...</p>
+    <br><h4 class="font-semibold mt-2">個人情報の第三者への開示・提供の禁止</h4>
+    <p>当社は、お客さまよりお預かりした個人情報を適切に管理し、次のいずれかに該当する場合を除き、個人情報を第三者に開示いたしません。...</p>
+    <br><h4 class="font-semibold mt-2">個人情報の安全対策</h4>
+    <p>当社は、個人情報の正確性及び安全性確保のために、セキュリティに万全の対策を講じています。</p>
+    <br><h4 class="font-semibold mt-2">ご本人の照合</h4>
+    <p>当社のお客さまがご本人の個人情報の照会・修正・削除などをご希望される場合には、ご本人であることを確認の上、対応させていただきます。</p>
+    <br><h4 class="font-semibold mt-2">法令、規範の遵守と見直し</h4>
+    <p>当社は、保有する個人情報に関して適用される日本の法令、その他規範を遵守するとともに、本ポリシーの内容を適宜見直し、その改善に努めます。</p><br>
+    <br><h4 class="font-semibold mt-2">個人情報に関するお問い合わせ先</h4>
+    <p>合同会社 ディーエックスソリューションズ<br>
+    個人情報保護管理責任者宛<br>
+    E-mail: info@dxpro-sol.com<br>
+    郵送: 〒114-0014 東京都北区田端4-21-14-402<br>
+    2024年6月10日制定<br>
+    代表取締役 金 兌訓</p>
+  </div>
+
+      <label class="inline-flex items-center justify-center gap-3">
+        <input type="checkbox" name="consent" required class="w-6 h-6 text-blue-700">
+        <span class="text-gray-700 text-lg font-semibold">
+          個人情報の取扱規定に同意する。
+        </span>
+      </label><br><br>
+      <button type="submit" class="w-full bg-gradient-to-r from-green-600 to-green-500 text-white font-bold py-3 rounded-lg shadow-lg hover:opacity-90 transform hover:-translate-y-0.5 transition-all">
+        応募する
+      </button>
+    </div>
+
+  </form>
+</main>
+
+<script>
+const careerForm = document.getElementById('careerForm');
+const noPortfolioBtnCareer = document.getElementById('noPortfolioCareer');
+const noAddress = document.getElementById('noAddress');
+const jpAddressFields = document.getElementById('jpAddressFields');
+const postalCodeInput = document.getElementById('postalCode');
+
+// 住所なし 체크
+noAddress.addEventListener('change', () => {
+  jpAddressFields.style.display = noAddress.checked ? 'none' : 'block';
+});
+
+// 郵便番号 검색
+postalCodeInput.addEventListener('blur', async () => {
+  const postalCode = postalCodeInput.value.replace(/-/g,'').trim();
+  if (!postalCode.match(/^[0-9]{7}$/)) return;
+
+  try {
+    const res = await fetch(`https://zipcloud.ibsnet.co.jp/api/search?zipcode=${postalCode}`);
+    const data = await res.json();
+
+    if (data.results) {
+      const result = data.results[0];
+      document.getElementById('prefecture').value = result.address1;
+      document.getElementById('city').value = result.address2 + result.address3;
+    } else {
+      alert("住所が見つかりませんでした。");
+    }
+  } catch (err) {
+    console.error(err);
+    alert("住所検索に失敗しました。");
+  }
+});
+
+noPortfolioBtnCareer.addEventListener('click', () => {
+      if(confirm("ポートフォリオなしで応募しますか？")) {
+
+  careerForm.querySelector('input[name="portfolioFiles"]').value = "";
+  careerForm.requestSubmit();
+}
+});
+
+careerForm.addEventListener('submit', async e => {
+  e.preventDefault();
+  const fd = new FormData(careerForm);
+  const res = await fetch("/apply/career", { method: "POST", body: fd });
+  const data = await res.json();
+  alert(data.message);
+  if(data.status==="success") careerForm.reset();
+});
+</script>
+
+</body>
+</html>

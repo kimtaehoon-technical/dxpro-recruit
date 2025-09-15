@@ -1,0 +1,9 @@
+{
+  "title": "DXPRO SOLUTIONS 채용사이트",
+  "login": "로그인",
+  "logout": "로그아웃",
+  "menu": {
+    "new": "신입사원 채용",
+    "career": "경력사원 채용"
+  }
+}

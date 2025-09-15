@@ -1,0 +1,13 @@
+{
+  "title": "DXPRO SOLUTIONS Recruitment Site",
+  "menu": {
+    "new": "New Graduate Recruitment",
+    "career": "Experienced Recruitment"
+  },
+  "logout": "Logout",
+  "alert": {
+    "login_success": "✅ Login successful!",
+    "logout_success": "✅ Logged out successfully.",
+    "register_success": "✅ Registration complete! Please login."
+  }
+}

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>応募詳細 - DXPRO SOLUTIONS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 font-sans min-h-screen">
+
+  <div class="max-w-6xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-lg">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold text-gray-800">応募詳細</h1>
+      <a href="/application-status.html" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-5 rounded-lg shadow-md transition duration-200">
+        応募履歴へ戻る
+      </a>
+    </div>
+
+    <div id="applicationDetail" class="space-y-4 text-gray-700 text-lg">
+      <!-- 動的に応募情報をここに表示 -->
+      <p><strong>日付:</strong> <span id="appDate">読み込み中...</span></p>
+      <p><strong>応募タイプ:</strong> <span id="appType">読み込み中...</span></p>
+      <p><strong>名前:</strong> <span id="appName">読み込み中...</span></p>
+      <p><strong>メール:</strong> <span id="appEmail">読み込み中...</span></p>
+      <p><strong>応募ポジション:</strong> <span id="appPosition">読み込み中...</span></p>
+      <p><strong>ステータス:</strong> <span id="appStatus" class="inline-block py-1 px-3 rounded-full text-sm font-semibold shadow-sm bg-gray-100 text-gray-800">読み込み中</span></p>
+      <p><strong>自己PR:</strong></p>
+      <div id="appPR" class="p-4 bg-gray-50 rounded-lg border border-gray-200 break-words whitespace-pre-wrap">長い文章でも折り返されます...</div>
+      <p><strong>志望動機:</strong></p>
+      <div id="appMotivation" class="p-4 bg-gray-50 rounded-lg border border-gray-200 break-words whitespace-pre-wrap">ここも同様です...</div>      <p><strong>人事担当者からの連絡:</strong></p>
+      <div id="appHRComment" class="p-4 bg-blue-50 rounded-lg border border-blue-200 text-blue-800">読み込み中...</div>
+    </div>
+  </div>
+
+  <script>
+    const positionMap = {
+      frontend: "フロントエンド",
+      backend: "バックエンド",
+      designer: "UIデザイナー",
+      pm: "プロジェクトマネージャー",
+      consultant: "コンサルタント",
+      qaengineer: "QAエンジニア"
+    };
+
+    function getStatusBadge(status) {
+      const base = "py-1 px-3 rounded-full text-sm font-semibold shadow-sm";
+      switch(status) {
+        case '承認済み': return `<span class="bg-green-100 text-green-800 ${base}">${status}</span>`;
+        case '進行中': return `<span class="bg-yellow-100 text-yellow-800 ${base}">${status}</span>`;
+        case '却下': return `<span class="bg-red-100 text-red-800 ${base}">${status}</span>`;
+        default: return `<span class="bg-gray-100 text-gray-800 ${base}">${status}</span>`;
+      }
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+
+    async function loadApplication() {
+    try {
+        if (!id) throw new Error("IDが指定されていません");
+
+        const res = await fetch(`/api/application/${id}`);
+        const data = await res.json();
+
+        if (data.status === "success" && data.application) {
+        const app = data.application;
+        document.getElementById("appDate").textContent = new Date(app.createdAt).toLocaleDateString();
+        document.getElementById("appType").textContent = app.type || "不明";
+        document.getElementById("appName").textContent = `${app.lastName || ""} ${app.firstName || ""}`;
+        document.getElementById("appEmail").textContent = app.email || "";
+        document.getElementById("appPosition").textContent = positionMap[app.position] || app.position || "";
+        document.getElementById("appStatus").innerHTML = getStatusBadge(app.status || "送信済み");
+        document.getElementById("appPR").textContent = app.pr || "なし";
+        document.getElementById("appMotivation").textContent = app.motivation || "なし";
+        document.getElementById("appHRComment").textContent = app.hrComment || "なし";
+        } else {
+        document.getElementById("applicationDetail").innerHTML = `<p class="text-center text-gray-500">応募情報が見つかりません</p>`;
+        }
+    } catch(err) {
+        console.error(err);
+        document.getElementById("applicationDetail").innerHTML = `<p class="text-center text-red-500">読み込み中にエラーが発生しました</p>`;
+    }
+    }
+
+    loadApplication();
+  </script>
+</body>
+</html>

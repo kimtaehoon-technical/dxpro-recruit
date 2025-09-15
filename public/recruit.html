@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>募集情報 - DXPRO SOLUTIONS 採用サイト</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-50 text-gray-800 font-['Noto_Sans_JP']">
+  <div class="flex min-h-screen relative">
+    <!-- 左サイドバー -->
+    <nav class="w-64 bg-gradient-to-b from-blue-800 to-blue-600 text-white shadow-lg p-6 flex flex-col sticky top-0 h-screen">
+      <a href="index.html" class="flex items-center gap-3 mb-8">
+        <img src="pic/logo.png" alt="DXPRO SOLUTIONS" class="object-contain drop-shadow-lg">
+      </a>
+      <ul class="flex-1 space-y-3">
+        <li>
+          <a href="index.html" class="flex items-center gap-3 py-3 px-4 rounded-lg hover:bg-blue-700 transition">
+            <i class="fas fa-home"></i> 採用ホーム
+          </a>
+        </li>
+        <li>
+          <a href="new.html" class="flex items-center gap-3 py-3 px-4 rounded-lg hover:bg-blue-700 transition">
+            <i class="fas fa-graduation-cap"></i> 新卒採用
+          </a>
+        </li>
+        <li>
+          <a href="career.html" class="flex items-center gap-3 py-3 px-4 rounded-lg hover:bg-blue-700 transition">
+            <i class="fas fa-briefcase"></i> キャリア採用
+          </a>
+        </li>
+        <li>
+          <a href="recruit.html" class="flex items-center gap-3 py-3 px-4 rounded-lg bg-blue-700 transition">
+            <i class="fas fa-list-alt"></i> 募集情報
+          </a>
+        </li>
+        <li>
+          <a href="application-status.html" class="flex items-center gap-3 py-3 px-4 rounded-lg hover:bg-blue-700 transition">
+            <i class="fas fa-clipboard-check"></i> 応募状況確認
+          </a>
+        </li>
+        <li>
+          <a href="settings.html" class="flex items-center gap-3 py-3 px-4 rounded-lg hover:bg-blue-700 transition">
+            <i class="fas fa-user-cog"></i> アカウント設定
+          </a>
+        </li>
+        <li><a href="contact.html" class="flex items-center gap-3 py-3 px-4 rounded-lg hover:bg-blue-700 transition">
+            <i class="fas fa-question-circle"></i> お問い合わせ</a>
+        </li>
+      </ul>
+
+      <div class="pt-4 border-t border-blue-500">
+        <a href="/logout" class="flex items-center gap-3 py-2 px-4 rounded-lg hover:bg-red-700 transition">
+          <i class="fas fa-sign-out-alt"></i> ログアウト
+        </a>
+      </div>
+    </nav>
+
+    <!-- メインコンテンツ -->
+    <main class="flex-1 p-8 overflow-y-auto">
+      <h1 class="text-3xl font-bold mb-6">募集ポジション</h1>
+      
+      <!-- フィルター -->
+      <div class="bg-white p-6 rounded-xl shadow-md mb-6">
+        <h2 class="text-xl font-bold mb-4">フィルター</h2>
+        <div class="flex flex-wrap gap-4">
+          <select id="employment-type" class="border rounded-md px-4 py-2">
+            <option value="">雇用形態</option>
+            <option value="正社員">正社員</option>
+            <option value="契約社員">契約社員</option>
+            <option value="パートタイム">パートタイム</option>
+          </select>
+          <select id="work-location" class="border rounded-md px-4 py-2">
+            <option value="">勤務地</option>
+            <option value="東京">東京</option>
+            <option value="大阪">大阪</option>
+            <option value="名古屋">名古屋</option>
+            <option value="福岡">福岡</option>
+          </select>
+          <select id="job-type" class="border rounded-md px-4 py-2">
+            <option value="">職種</option>
+            <option value="エンジニア">エンジニア</option>
+            <option value="デザイナー">デザイナー</option>
+            <option value="マネージャー">マネージャー</option>
+            <option value="営業">営業</option>
+          </select>
+          <button id="apply-filter" class=" text-white px-4 py-2 rounded-md transition"></button>
+          <button id="reset-filter" class="border border-gray-300 px-4 py-2 rounded-md hover:bg-gray-100 transition">リセット</button>
+        </div>
+      </div>
+      
+      <!-- 募集ポジション一覧 -->
+      <div id="positions-container" class="grid grid-cols-1 gap-6">
+        <!-- ポジション1 -->
+        <div class="position-item bg-white p-6 rounded-xl shadow-md" data-employment-type="正社員" data-work-location="東京" data-job-type="エンジニア" data-category="新卒">
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded">新卒</span>
+              <h2 class="text-2xl font-bold mt-2">ソフトウェアエンジニア</h2>
+            </div>
+            <button class="bg-gray-200 p-2 rounded-md hover:bg-gray-300 transition">
+              <i class="far fa-bookmark"></i>
+            </button>
+          </div>
+          <p class="text-gray-600 mb-4">クラウドベースのソフトウェア開発および保守。最新技術を活用したシステム開発に携わることができます。</p>
+          <div class="flex flex-wrap gap-4 mb-4">
+            <div class="flex items-center">
+              <i class="fas fa-map-marker-alt text-gray-400 mr-2"></i>
+              <span>東京 / リモート可</span>
+            </div>
+            <div class="flex items-center">
+              <i class="fas fa-yen-sign text-gray-400 mr-2"></i>
+              <span>相談要</span>
+            </div>
+            <div class="flex items-center">
+              <i class="fas fa-briefcase text-gray-400 mr-2"></i>
+              <span>正社員</span>
+            </div>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-sm text-gray-500">応募締切: 常時</span>
+            <a href="position-detail.html?id=1" class="bg-blue-700 text-white px-6 py-2 rounded-md hover:bg-blue-800 transition">詳細を見る</a>
+          </div>
+        </div>
+      <div id="positions-container" class="grid grid-cols-1 gap-6">
+        <!-- ポジション1-2 -->
+        <div class="position-item bg-white p-6 rounded-xl shadow-md" data-employment-type="正社員" data-work-location="東京" data-job-type="エンジニア" data-category="中途">
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">中途</span>
+              <h2 class="text-2xl font-bold mt-2">ソフトウェアエンジニア</h2>
+            </div>
+            <button class="bg-gray-200 p-2 rounded-md hover:bg-gray-300 transition">
+              <i class="far fa-bookmark"></i>
+            </button>
+          </div>
+          <p class="text-gray-600 mb-4">クラウドベースのソフトウェア開発および保守。最新技術を活用したシステム開発に携わることができます。</p>
+          <div class="flex flex-wrap gap-4 mb-4">
+            <div class="flex items-center">
+              <i class="fas fa-map-marker-alt text-gray-400 mr-2"></i>
+              <span>東京 / リモート可</span>
+            </div>
+            <div class="flex items-center">
+              <i class="fas fa-yen-sign text-gray-400 mr-2"></i>
+              <span>相談要</span>
+            </div>
+            <div class="flex items-center">
+              <i class="fas fa-briefcase text-gray-400 mr-2"></i>
+              <span>正社員</span>
+            </div>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-sm text-gray-500">応募締切: 常時</span>
+            <a href="position-detail.html?id=1" class="bg-blue-700 text-white px-6 py-2 rounded-md hover:bg-blue-800 transition">詳細を見る</a>
+          </div>
+        </div>
+        <!-- ポジション2 -->
+        <div class="position-item bg-white p-6 rounded-xl shadow-md" data-employment-type="正社員" data-work-location="東京 リモート" data-job-type="エンジニア" data-category="中途">
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">中途</span>
+              <h2 class="text-2xl font-bold mt-2">データサイエンティスト</h2>
+            </div>
+            <button class="bg-gray-200 p-2 rounded-md hover:bg-gray-300 transition">
+              <i class="far fa-bookmark"></i>
+            </button>
+          </div>
+          <p class="text-gray-600 mb-4">ビッグデータ分析およびAIモデル開発。機械学習アルゴリズムの研究・開発から実装まで幅広く担当していただきます。</p>
+          <div class="flex flex-wrap gap-4 mb-4">
+            <div class="flex items-center">
+              <i class="fas fa-map-marker-alt text-gray-400 mr-2"></i>
+              <span>東京 / リモート可</span>
+            </div>
+            <div class="flex items-center">
+              <i class="fas fa-yen-sign text-gray-400 mr-2"></i>
+              <span>年俸 480万～800万</span>
+            </div>
+            <div class="flex items-center">
+              <i class="fas fa-briefcase text-gray-400 mr-2"></i>
+              <span>正社員</span>
+            </div>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-sm text-gray-500">応募締切: 2025年12月31日</span>
+            <a href="position-detail2.html?id=2" class="bg-blue-700 text-white px-6 py-2 rounded-md hover:bg-blue-800 transition">詳細を見る</a>
+          </div>
+        </div>
+        
+        <!-- ポジション3 -->
+        <div class="position-item bg-white p-6 rounded-xl shadow-md" data-employment-type="正社員" data-work-location="東京" data-job-type="デザイナー" data-category="中途">
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">中途</span>
+              <h2 class="text-2xl font-bold mt-2">UI/UXデザイナー</h2>
+            </div>
+            <button class="bg-gray-200 p-2 rounded-md hover:bg-gray-300 transition">
+              <i class="far fa-bookmark"></i>
+            </button>
+          </div>
+          <p class="text-gray-600 mb-4">ユーザー体験中心の設計およびプロトタイプ作成。顧客のニーズを理解し、直感的で美しいインターフェースを設計します。</p>
+          <div class="flex flex-wrap gap-4 mb-4">
+            <div class="flex items-center">
+              <i class="fas fa-map-marker-alt text-gray-400 mr-2"></i>
+              <span>東京 / リモート可</span>
+            </div>
+            <div class="flex items-center">
+              <i class="fas fa-yen-sign text-gray-400 mr-2"></i>
+              <span>年俸 360万～700万</span>
+            </div>
+            <div class="flex items-center">
+              <i class="fas fa-briefcase text-gray-400 mr-2"></i>
+              <span>正社員</span>
+            </div>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-sm text-gray-500">応募締切: 2025年12月31日</span>
+            <a href="position-detail3.html?id=3" class="bg-blue-700 text-white px-6 py-2 rounded-md hover:bg-blue-800 transition">詳細を見る</a>
+          </div>
+        </div>
+        
+        <!-- ポジション4 -->
+        <div class="position-item bg-white p-6 rounded-xl shadow-md" data-employment-type="正社員" data-work-location="東京" data-job-type="マネージャー" data-category="中途">
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">中途</span>
+              <h2 class="text-2xl font-bold mt-2">プロジェクトマネージャー</h2>
+            </div>
+            <button class="bg-gray-200 p-2 rounded-md hover:bg-gray-300 transition">
+              <i class="far fa-bookmark"></i>
+            </button>
+          </div>
+          <p class="text-gray-600 mb-4">ITプロジェクトの企画およびスケジュール管理。大規模なデジタル変革プロジェクトをリードしていただきます。</p>
+          <div class="flex flex-wrap gap-4 mb-4">
+            <div class="flex items-center">
+              <i class="fas fa-map-marker-alt text-gray-400 mr-2"></i>
+              <span>東京 / リモート可</span>
+            </div>
+            <div class="flex items-center">
+              <i class="fas fa-yen-sign text-gray-400 mr-2"></i>
+              <span>年俸 600万～1200万</span>
+            </div>
+            <div class="flex items-center">
+              <i class="fas fa-briefcase text-gray-400 mr-2"></i>
+              <span>正社員</span>
+            </div>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-sm text-gray-500">応募締切: 2025年12月31日</span>
+            <a href="position-detail4.html?id=4" class="bg-blue-700 text-white px-6 py-2 rounded-md hover:bg-blue-800 transition">詳細を見る</a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- ページネーション -->
+      <div class="flex justify-center mt-8">
+        <nav class="flex items-center gap-2">
+          <a href="#" class="px-3 py-1 rounded border hover:bg-gray-100">前へ</a>
+          <a href="#" class="px-3 py-1 rounded border bg-blue-700 text-white">1</a>
+          <a href="#" class="px-3 py-1 rounded border hover:bg-gray-100">次へ</a>
+        </nav>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // 필터 요소들
+      const employmentTypeFilter = document.getElementById('employment-type');
+      const workLocationFilter = document.getElementById('work-location');
+      const jobTypeFilter = document.getElementById('job-type');
+      const applyFilterButton = document.getElementById('apply-filter');
+      const resetFilterButton = document.getElementById('reset-filter');
+      const positionItems = document.querySelectorAll('.position-item');
+      
+      // 필터 적용 함수
+      function applyFilters() {
+        const employmentTypeValue = employmentTypeFilter.value;
+        const workLocationValue = workLocationFilter.value;
+        const jobTypeValue = jobTypeFilter.value;
+        
+        positionItems.forEach(item => {
+          let showItem = true;
+          
+          // 고용 형태 필터링
+          if (employmentTypeValue && item.getAttribute('data-employment-type') !== employmentTypeValue) {
+            showItem = false;
+          }
+          
+          // 근무지 필터링
+          if (workLocationValue && !item.getAttribute('data-work-location').includes(workLocationValue)) {
+            showItem = false;
+          }
+          
+          // 직종 필터링
+          if (jobTypeValue && item.getAttribute('data-job-type') !== jobTypeValue) {
+            showItem = false;
+          }
+          
+          // 아이템 표시/숨김 처리
+          if (showItem) {
+            item.style.display = 'block';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      }
+      
+      // 필터 초기화 함수
+      function resetFilters() {
+        employmentTypeFilter.value = '';
+        workLocationFilter.value = '';
+        jobTypeFilter.value = '';
+        
+        // 모든 포지션 아이템 표시
+        positionItems.forEach(item => {
+          item.style.display = 'block';
+        });
+      }
+      
+      // 이벤트 리스너 등록
+      applyFilterButton.addEventListener('click', applyFilters);
+      resetFilterButton.addEventListener('click', resetFilters);
+      
+      // 필터 변경 시 자동 적용 (선택 사항)
+      employmentTypeFilter.addEventListener('change', applyFilters);
+      workLocationFilter.addEventListener('change', applyFilters);
+      jobTypeFilter.addEventListener('change', applyFilters);
+    });
+  </script>
+</body>
+</html>
