@@ -62,7 +62,6 @@ function requireLoginPage(req, res, next) {
 // 보호할 페이지들
 const protectedPages = [
   "/index.html",
-  "/contact.html",
   "/application-case.html",
   "/application-detail.html",
   "/application-status.html",

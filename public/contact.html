@@ -2,104 +2,212 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>お問い合わせ - DXPRO SOLUTIONS</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body { font-family: 'Inter', sans-serif; }
-    input, textarea {
-      transition: all 0.2s ease;
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --secondary: #7e22ce;
+      --light: #f8fafc;
+      --dark: #1e293b;
     }
-    input:focus, textarea:focus {
-      border-color: #2563eb;
-      box-shadow: 0 0 0 3px rgba(37,99,235,0.2);
+    
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    }
+    
+    .card-glass {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
+    }
+    
+    .form-input {
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .form-input:focus {
+      border-color: rgba(37, 99, 235, 0.6);
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+      background: rgba(255, 255, 255, 0.08);
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4);
+    }
+    
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+    
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+    
+    .background-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: blur(8px) brightness(0.4);
+      z-index: -1;
+    }
+    
+    .floating {
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
     }
   </style>
 </head>
-<body class="bg-gradient-to-b from-blue-50 to-gray-100 min-h-screen flex flex-col items-center p-6">
+<body class="min-h-screen flex flex-col items-center justify-center p-4 md:p-8">
+  <!-- 背景ビデオ -->
+  <video autoplay muted loop class="background-video">
+    <source src="/images/video.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
 
-<header class="text-center mb-10">
-  <h1 class="text-4xl font-extrabold text-blue-600 mb-2">お問い合わせ</h1>
-  <a href="/index.html" 
-    class="inline-flex items-center gap-2 px-4 py-2 
-            bg-white border border-blue-500 text-blue-600 
-            rounded-full shadow-sm hover:bg-blue-50 
-            transition-colors duration-200">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" 
-        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-    </svg>
-    ホームに戻る
-  </a>
-</header>
+  <!-- メインコンテンツ -->
+  <div class="flex-1 w-full max-w-4xl flex items-center justify-center py-8">
+    <div class="w-full card-glass rounded-2xl overflow-hidden">
+      <!-- ヘッダーセクション -->
+      <div class="bg-gradient-to-r from-blue-900/70 to-purple-900/70 p-6 md:p-8 text-center">
+        <div class="floating inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/10 mb-4">
+          <i class="fas fa-envelope-open-text text-3xl text-white"></i>
+        </div>
+        <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">お問い合わせ</h1>
+        <p class="text-blue-100">ご質問やご相談がございましたら、お気軽にお問い合わせください</p>
+      </div>
+      
+      <!-- フォームセクション -->
+      <div class="p-6 md:p-8">
+        <form id="contactForm" class="space-y-6">
+          <!-- 名前 -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div class="flex flex-col">
+              <label class="text-white font-medium mb-2 flex items-center">
+                <i class="fas fa-user mr-2 text-blue-300"></i>姓
+              </label>
+              <input type="text" name="lastName" required class="form-input rounded-xl p-4 text-white placeholder-gray-400" placeholder="例: 山田">
+            </div>
+            <div class="flex flex-col">
+              <label class="text-white font-medium mb-2 flex items-center">
+                <i class="fas fa-user mr-2 text-blue-300"></i>名
+              </label>
+              <input type="text" name="firstName" required class="form-input rounded-xl p-4 text-white placeholder-gray-400" placeholder="例: 太郎">
+            </div>
+          </div>
 
-<main class="w-full max-w-3xl">
-  <form id="contactForm" class="bg-white p-8 rounded-2xl shadow-md border border-gray-200 space-y-6">
+          <!-- メール -->
+          <div class="flex flex-col">
+            <label class="text-white font-medium mb-2 flex items-center">
+              <i class="fas fa-envelope mr-2 text-blue-300"></i>メールアドレス
+            </label>
+            <input type="email" name="email" required class="form-input rounded-xl p-4 text-white placeholder-gray-400" placeholder="例: xxxx@gmail.com">
+          </div>
 
-    <!-- 名前 -->
-    <div class="grid grid-cols-2 gap-4">
-      <label>
-        <span class="text-gray-600 font-medium">姓</span>
-        <input type="text" name="lastName" required class="mt-1 border rounded-lg p-3 w-full shadow-sm" placeholder="例: 山田">
-      </label>
-      <label>
-        <span class="text-gray-600 font-medium">名</span>
-        <input type="text" name="firstName" required class="mt-1 border rounded-lg p-3 w-full shadow-sm" placeholder="例: 太郎">
-      </label>
+          <!-- 電話番号 -->
+          <div class="flex flex-col">
+            <label class="text-white font-medium mb-2 flex items-center">
+              <i class="fas fa-phone mr-2 text-blue-300"></i>電話番号
+            </label>
+            <input type="tel" name="phone" class="form-input rounded-xl p-4 text-white placeholder-gray-400" placeholder="例: 080-0000-1111">
+          </div>
+
+          <!-- お問い合わせ内容 -->
+          <div class="flex flex-col">
+            <label class="text-white font-medium mb-2 flex items-center">
+              <i class="fas fa-comment-dots mr-2 text-blue-300"></i>お問い合わせ内容
+            </label>
+            <textarea name="message" rows="5" required class="form-input rounded-xl p-4 text-white placeholder-gray-400 resize-none" placeholder="ご自由にご記入ください"></textarea>
+          </div>
+
+          <!-- 送信ボタン -->
+          <div class="pt-4">
+            <button type="submit" class="btn-primary w-full py-4 rounded-xl text-white font-bold text-lg">
+              <i class="fas fa-paper-plane mr-2"></i>送信する
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
 
-    <!-- メール -->
-    <label class="block">
-      <span class="text-gray-600 font-medium">メールアドレス</span>
-      <input type="email" name="email" required class="mt-1 border rounded-lg p-3 w-full shadow-sm" placeholder="例: xxxx@gmail.com">
-    </label>
+  <!-- フッターアクション -->
+  <div class="w-full max-w-4xl mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 z-10">
+    <a href="https://dxpro-sol.com" target="_blank" rel="noopener noreferrer"
+       class="btn-secondary py-4 px-6 rounded-xl text-white font-semibold flex items-center justify-center">
+      <i class="fas fa-external-link-alt mr-2"></i>DXPRO SOLUTIONS ポータルサイトへ
+    </a>
+    
+    <a href="/index.html"
+       class="btn-secondary py-4 px-6 rounded-xl text-white font-semibold flex items-center justify-center">
+      <i class="fas fa-home mr-2"></i>採用ホームに戻る
+    </a>
+  </div>
 
-    <!-- 電話番号 -->
-    <label class="block">
-      <span class="text-gray-600 font-medium">電話番号</span>
-      <input type="tel" name="phone" class="mt-1 border rounded-lg p-3 w-full shadow-sm" placeholder="例: 080-0000-1111">
-    </label>
+  <!-- スクリプト -->
+  <script>
+    const form = document.getElementById('contactForm');
+    
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      
+      // ボタンのローディング状態
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerHTML;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 送信中...';
+      submitBtn.disabled = true;
+      
+      const data = {
+        name: form.lastName.value + " " + form.firstName.value,
+        email: form.email.value,
+        phone: form.phone.value,
+        message: form.message.value,
+      };
 
-    <!-- お問い合わせ内容 -->
-    <label class="block">
-      <span class="text-gray-600 font-medium">お問い合わせ内容</span>
-      <textarea name="message" rows="5" required class="mt-1 border rounded-lg p-3 w-full resize-none shadow-sm" placeholder="ご自由にご記入ください"></textarea>
-    </label>
+      try {
+        const res = await fetch("/contact", { 
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
 
-    <!-- 送信ボタン -->
-    <div class="text-center">
-      <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white font-bold py-3 rounded-lg shadow-lg hover:opacity-90 transform hover:-translate-y-0.5 transition-all">
-        送信する
-      </button>
-    </div>
-  </form>
-</main>
+        const result = await res.json();
+        alert(result.message);
 
-<script>
-const form = document.getElementById('contactForm');
-form.addEventListener('submit', async e => {
-  e.preventDefault();
-
-  const data = {
-    name: form.lastName.value + " " + form.firstName.value,
-    email: form.email.value,
-    phone: form.phone.value,
-    message: form.message.value,
-  };
-
-  const res = await fetch("/contact", { 
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data)
-  });
-
-  const result = await res.json();
-  alert(result.message);
-
-  if(result.status==="success") form.reset();
-});
-</script>
-
-
+        if(result.status === "success") form.reset();
+      } catch(err) {
+        alert("送信中にエラーが発生しました。後ほど再度お試しください。");
+        console.error(err);
+      } finally {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+      }
+    });
+  </script>
 </body>
 </html>
