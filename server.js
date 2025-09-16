@@ -151,7 +151,6 @@ app.post("/register", async (req, res) => {
   res.redirect("/login.html?msg=register_success");
 });
 
-
 // 로그아웃
 app.get("/logout", (req, res) => {
   req.session.destroy(() => {
@@ -423,6 +422,295 @@ function requireLogin(req, res, next) {
   next();
 }
 
+const ResetToken = require("./models/ResetToken");
+const crypto = require('crypto');
+
+// パスワードリセットリクエスト（デバッグ用ログ追加）
+app.post('/api/forgot-password', async (req, res) => {
+  try {
+    console.log('パスワードリセットリクエスト受信:', req.body);
+    
+    const { email } = req.body;
+    
+    if (!email) {
+      console.log('メールアドレスが提供されていません');
+      return res.status(400).json({ 
+        status: 'error', 
+        message: 'メールアドレスが必要です' 
+      });
+    }
+    
+    // ユーザーの存在確認
+    const user = await User.findOne({ email });
+    console.log('ユーザー検索結果:', user ? '見つかりました' : '見つかりませんでした');
+    
+    if (!user) {
+      // セキュリティ上の理由で、ユーザーが存在しない場合でも成功メッセージを返す
+      return res.json({ 
+        status: 'success', 
+        message: 'パスワードリセットリンクを送信しました' 
+      });
+    }
+
+    // 既存のトークンを削除
+    await ResetToken.deleteMany({ userId: user._id });
+
+    // リセットトークン生成
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const hashedToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+
+    // トークンをDBに保存
+    await new ResetToken({
+      userId: user._id,
+      token: hashedToken,
+      createdAt: Date.now(),
+    }).save();
+
+    // リセットリンクの生成
+    const resetLink = `${req.protocol}://${req.get('host')}/reset-password.html?token=${resetToken}&id=${user._id}`;
+    console.log('生成されたリセットリンク:', resetLink);
+
+    // メール送信（テストモードの場合はスキップ）
+    if (process.env.NODE_ENV !== 'test') {
+    await transporter.sendMail({
+      from: '"DXPROサポート" <info@dxpro-sol.com>',
+      to: email,
+      subject: 'パスワードリセットのご案内',
+      html: `
+        <p>パスワードリセットのリクエストを受け付けました。</p>
+        <p>以下のリンクをクリックして新しいパスワードを設定してください：</p>
+        <a href="${resetLink}">パスワードをリセットする</a>
+        <p>※リンクの有効期限は1時間です。</p>
+      `
+    });
+      console.log('パスワードリセットメールを送信しました');
+    } else {
+      console.log('テストモード: メール送信をスキップしました');
+    }
+
+    res.json({ 
+      status: 'success', 
+      message: 'パスワードリセットリンクを送信しました' 
+    });
+  } catch (error) {
+    console.error('パスワードリセットエラー:', error);
+    res.status(500).json({ 
+      status: 'error', 
+      message: 'サーバーエラーが発生しました' 
+    });
+  }
+});
+
+// パスワードリセットの実行
+app.post('/api/reset-password', async (req, res) => {
+  try {
+    const { userId, token, password } = req.body;
+
+    // トークンの検証
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+    const resetToken = await ResetToken.findOne({
+      userId,
+      token: hashedToken,
+      createdAt: { $gt: new Date(Date.now() - 3600 * 1000) } // 1時間以内のトークンのみ有効
+    });
+
+    if (!resetToken) {
+      return res.status(400).json({ 
+        status: 'error', 
+        message: '無効または期限切れのトークンです' 
+      });
+    }
+
+    // パスワードの更新
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await User.findByIdAndUpdate(userId, { password: hashedPassword });
+
+    // 使用済みトークンの削除
+    await ResetToken.findByIdAndDelete(resetToken._id);
+
+    res.json({ 
+      status: 'success', 
+      message: 'パスワードが正常に更新されました' 
+    });
+  } catch (error) {
+    console.error('パスワードリセットエラー:', error);
+    res.status(500).json({ 
+      status: 'error', 
+      message: 'サーバーエラーが発生しました' 
+    });
+  }
+});
+
+// トークンの有効性チェックAPIの修正
+app.get('/api/verify-reset-token', async (req, res) => {
+  try {
+    console.log('トークン検証リクエスト受信 query params:', req.query);
+    
+    // 両方のパラメータ名に対応（id と userId）
+    const userId = req.query.userId || req.query.id;
+    const token = req.query.token;
+
+    console.log('解析されたパラメータ - userId:', userId, 'token:', token);
+
+    if (!userId || !token) {
+      console.log('userIdまたはtokenが不足しています');
+      return res.status(400).json({ 
+        status: 'error', 
+        message: '無効なリクエストです' 
+      });
+    }
+
+    // userIdが有効なObjectIdか確認
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      console.log('無効なuserId形式:', userId);
+      return res.status(400).json({ 
+        status: 'error', 
+        message: '無効なユーザーIDです' 
+      });
+    }
+
+    // トークンのデコード（URLエンコードされている場合）
+    const decodedToken = decodeURIComponent(token);
+    const hashedToken = crypto.createHash('sha256').update(decodedToken).digest('hex');
+    console.log('元のトークン:', token);
+    console.log('デコードされたトークン:', decodedToken);
+    console.log('ハッシュ化されたトークン:', hashedToken);
+    
+    // トークン検索
+    const resetToken = await ResetToken.findOne({
+      userId: new mongoose.Types.ObjectId(userId),
+      token: hashedToken,
+      createdAt: { $gt: new Date(Date.now() - 3600 * 1000) } // 1時間以内のトークンのみ有効
+    });
+
+    console.log('データベース検索結果:', resetToken);
+    
+    if (!resetToken) {
+      // より詳細なエラー情報を提供
+      const expiredToken = await ResetToken.findOne({
+        userId: new mongoose.Types.ObjectId(userId),
+        token: hashedToken
+      });
+      
+      if (expiredToken) {
+        console.log('期限切れトークンが見つかりました');
+        return res.status(400).json({ 
+          status: 'error', 
+          message: 'トークンの有効期限が切れています。新しいリセットリンクを請求してください。' 
+        });
+      } else {
+        console.log('トークンが存在しません');
+        // データベースの状態を確認
+        const allTokens = await ResetToken.find({ userId: new mongoose.Types.ObjectId(userId) });
+        console.log('ユーザーのすべてのトークン:', allTokens);
+        
+        return res.status(400).json({ 
+          status: 'error', 
+          message: '無効なトークンです。新しいリセットリンクを請求してください。' 
+        });
+      }
+    }
+
+    console.log('トークン検証成功');
+    res.json({ 
+      status: 'success', 
+      message: '有効なトークンです' 
+    });
+  } catch (error) {
+    console.error('トークン検証エラー:', error);
+    res.status(500).json({ 
+      status: 'error', 
+      message: 'サーバーエラーが発生しました' 
+    });
+  }
+});
+
+// データベースデバッグ用の関数
+app.get('/api/debug-tokens/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ 
+        status: 'error', 
+        message: '無効なユーザーIDです' 
+      });
+    }
+    
+    const tokens = await ResetToken.find({ 
+      userId: new mongoose.Types.ObjectId(userId) 
+    });
+    
+    console.log('ユーザーのトークン:', tokens);
+    
+    res.json({ 
+      status: 'success', 
+      tokens: tokens,
+      count: tokens.length
+    });
+  } catch (error) {
+    console.error('デバッグエラー:', error);
+    res.status(500).json({ 
+      status: 'error', 
+      message: 'サーバーエラーが発生しました' 
+    });
+  }
+});
+
+// すべてのトークンを表示（デバッグ用）
+app.get('/api/debug-all-tokens', async (req, res) => {
+  try {
+    const tokens = await ResetToken.find().populate('userId', 'email');
+    console.log('すべてのトークン:', tokens);
+    
+    res.json({ 
+      status: 'success', 
+      tokens: tokens,
+      count: tokens.length
+    });
+  } catch (error) {
+    console.error('デバッグエラー:', error);
+    res.status(500).json({ 
+      status: 'error', 
+      message: 'サーバーエラーが発生しました' 
+    });
+  }
+});
+
+// ユーザーのメールアドレスを取得するAPI（server.jsに追加）
+app.get('/api/user-email/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ 
+        status: 'error', 
+        message: '無効なユーザーIDです' 
+      });
+    }
+    
+    const user = await User.findById(userId).select('email');
+    
+    if (!user) {
+      return res.status(404).json({ 
+        status: 'error', 
+        message: 'ユーザーが見つかりません' 
+      });
+    }
+    
+    res.json({ 
+      status: 'success', 
+      email: user.email 
+    });
+  } catch (error) {
+    console.error('ユーザー情報取得エラー:', error);
+    res.status(500).json({ 
+      status: 'error', 
+      message: 'サーバーエラーが発生しました' 
+    });
+  }
+});
+
 // アカウント設定更新
 app.post("/api/user/account", requireLogin, async (req, res) => {
   try {
@@ -559,7 +847,6 @@ app.get("/api/application/:id", async (req, res) => {
     res.status(500).json({ status: "error", message: "サーバーエラー" });
   }
 });
-
 
 // 応募詳細画面 (新卒・キャリア両方対応)
 app.get("/applications/:id", requireLogin, async (req, res) => {

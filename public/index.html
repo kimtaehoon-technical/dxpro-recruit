@@ -224,6 +224,22 @@ section, #slider {
 
 <script>
 
+  const user = {
+    name: "テストユーザー",
+    role: "admin" // roleがある場合に表示
+  };
+
+  const authLinkContainer = document.getElementById("authLinkContainer");
+
+  if (!user.role) {
+    // roleがない場合は非表示
+    authLinkContainer.style.display = "none";
+  } else {
+    // roleがある場合は表示（念のため）
+    authLinkContainer.style.display = "block";
+  }
+
+  
 
 // スライド画像とテキスト
 const slides = document.querySelectorAll("#slider img");
