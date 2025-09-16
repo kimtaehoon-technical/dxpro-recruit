@@ -32,7 +32,7 @@
       </li>
       <li>
         <a href="career.html" class="flex items-center gap-3 py-3 px-4 rounded-lg hover:bg-blue-700 transition">
-          <i class="fas fa-briefcase"></i> キャリア採用
+          <i class="fas fa-briefcase"></i> 中途採用
         </a>
       </li>
       <li>
@@ -219,21 +219,6 @@ section, #slider {
 
 <script>
 
-  const isLoggedIn = !!sessionStorage.getItem("userId");
-
-  const authLink = document.getElementById("authLink");
-  const authText = document.getElementById("authText");
-  const authIcon = document.getElementById("authIcon");
-
-  if (!isLoggedIn) {
-    // 未ログイン時 → 로그인 링크로 변경
-    authLink.href = "/login.html";
-    authText.textContent = "ログイン";
-    authIcon.classList.remove("fa-sign-out-alt");
-    authIcon.classList.add("fa-sign-in-alt");
-    authLink.classList.remove("hover:bg-red-700");
-    authLink.classList.add("hover:bg-green-700");
-  }
 
 // スライド画像とテキスト
 const slides = document.querySelectorAll("#slider img");
