@@ -205,24 +205,31 @@
             margin-bottom: 1rem;
             font-size: 1.5rem;
             font-weight: 600;
+            text-align: center;
         }
         
         .benefit-content p {
             color: #555;
             margin-bottom: 1.5rem;
             line-height: 1.6;
+            text-align: center;
         }
         
         .benefit-list {
             list-style-type: none;
             margin-top: auto;
+            text-align: center; /* リスト全体を中央揃え */
+            padding-left: 0; /* デフォルトのパディングを削除 */
         }
         
         .benefit-list li {
             padding: 0.5rem 0;
             position: relative;
-            padding-left: 2rem;
             border-bottom: 1px dashed #f0f0f0;
+            text-align: center; /* テキストを中央揃え */
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         
         .benefit-list li:last-child {
@@ -232,10 +239,10 @@
         .benefit-list li:before {
             content: "✓";
             color: #27ae60;
-            position: absolute;
-            left: 0;
             font-weight: bold;
             font-size: 1.1rem;
+            margin-right: 0.5rem;
+            position: static; /* 絶対位置指定を解除 */
         }
         
         /* カラーバリエーション */
@@ -437,10 +444,11 @@
                     <h3>健康・医療サポート</h3>
                     <p>従業員の健康維持を全面的にサポートします</p>
                     <ul class="benefit-list">
-                        <li>健康診断の完全補助</li>
+                        <li>年１回健康診断補助</li>
+                        <li>社会保険加入</li>
                         <li>ストレスチェック制度</li>
-                        <li>インフルエンザ予防接種補助</li>
-                        <li>歯科検診補助（年1回）</li>
+                        <li>1on1制度実施</li>
+                        <li>月１回職務満足度相談実施</li>
                     </ul>
                 </div>
             </div>
@@ -452,8 +460,8 @@
                     <h3>休暇・休業制度</h3>
                     <p>ライフイベントに合わせた柔軟な休暇制度</p>
                     <ul class="benefit-list">
-                        <li>年次有給休暇（最大20日）</li>
-                        <li>リフレッシュ休暇（3年・5年継続ごとに付与）</li>
+                        <li>年次有給休暇</li>
+                        <li>リフレッシュ休暇<br>（3年・5年継続ごとに付与）</li>
                         <li>慶弔休暇</li>
                         <li>育児・介護休業制度</li>
                     </ul>
@@ -467,10 +475,11 @@
                     <h3>経済的支援</h3>
                     <p>経済的な負担を軽減する各種制度</p>
                     <ul class="benefit-list">
-                        <li>家賃補助制度（月額最大15,000円）</li>
+                        <li>家賃補助制度</li>
                         <li>資格取得支援制度</li>
-                        <li>書籍購入補助（年額10,000円）</li>
-                        <li>社内預金制度（利子優遇）</li>
+                        <li>DB/CB制度支援</li>
+                        <li>書籍購入補助</li>
+                        <br>
                     </ul>
                 </div>
             </div>
@@ -483,9 +492,9 @@
                     <p>日々の仕事を快適にするサポート</p>
                     <ul class="benefit-list">
                         <li>交通費全額支給</li>
-                        <li>昼食補助（1日300円）</li>
-                        <li>社員割引（自社サービス利用時）</li>
-                        <li>レクリエーション活動補助</li>
+                        <li>社内部活支援</li>
+                        <li>社員割引<br>（自社サービス利用時：NOKORI）</li>
+                        <li>社内イベント支援<br>（バーベキュー/旅行）</li>
                     </ul>
                 </div>
             </div>
@@ -499,7 +508,7 @@
                     <ul class="benefit-list">
                         <li>フレックスタイム制</li>
                         <li>リモートワーク制度</li>
-                        <li>短時間勤務制度</li>
+                        <li>短時間勤務制度（要相談）</li>
                         <li>時間単位年休制度</li>
                     </ul>
                 </div>
@@ -517,28 +526,6 @@
                         <li>キャリアコンサルティング</li>
                         <li>外部セミナー参加支援</li>
                     </ul>
-                </div>
-            </div>
-        </div>
-        
-        <!-- 統計セクション -->
-        <div class="stats-section">
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-number">96%</div>
-                    <div class="stat-label">従業員満足度</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">15</div>
-                    <div class="stat-label">種類以上の福利厚生</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">98%</div>
-                    <div class="stat-label">制度利用率</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">4.8</div>
-                    <div class="stat-label">平均評価（5段階）</div>
                 </div>
             </div>
         </div>
