@@ -2,31 +2,66 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ログイン - DXPRO SOLUTIONS</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .form-input {
+      transition: all 0.3s ease;
+    }
+    .form-input:focus {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px -10px rgba(5, 150, 105, 0.3);
+    }
+    .login-btn {
+      transition: all 0.3s ease;
+    }
+    .login-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgba(5, 150, 105, 0.4);
+    }
+  </style>
 </head>
-<body class="bg-gradient-to-br from-green-50 to-gray-50 min-h-screen flex items-center justify-center p-4">
+<body class="bg-gradient-to-br from-gray-50 to-green-50 min-h-screen flex items-center justify-center p-4">
+  <div class="bg-white rounded-2xl p-8 w-full max-w-md shadow-2xl shadow-green-100/50 border border-gray-100">
+    <div class="flex justify-center mb-6">
+      <div class="w-16 h-16 rounded-full bg-gradient-to-r from-green-400 to-emerald-600 flex items-center justify-center shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+        </svg>
+      </div>
+    </div>
+    
+    <h2 class="text-3xl font-bold text-center mb-2 bg-gradient-to-r from-green-600 to-emerald-700 bg-clip-text text-transparent">ログイン</h2>
+    <p class="text-center text-gray-500 mb-8">DXPRO SOLUTIONS採用へようこそ</p>
 
-  <div class="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md">
-    <h2 class="text-3xl font-bold text-green-700 text-center mb-6">ログイン</h2>
+    <div id="alertBox" class="hidden mb-4 p-4 rounded-xl text-white font-medium transition-all duration-500 transform"></div>
 
-    <div id="alertBox" class="hidden mb-4 p-3 rounded-lg text-white font-medium"></div>
-
-    <form action="/login" method="post" class="space-y-4">
-      <input type="text" name="username" placeholder="ユーザー名" required
-        class="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400">
-      <input type="password" name="password" placeholder="パスワード" required
-        class="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+    <form action="/login" method="post" class="space-y-5">
+      <div>
+        <input type="text" name="username" placeholder="ログインID" required
+          class="w-full p-4 border border-gray-200 rounded-xl shadow-sm form-input focus:ring-2 focus:ring-green-400 focus:border-transparent">
+      </div>
+      <div>
+        <input type="password" name="password" placeholder="パスワード" required
+          class="w-full p-4 border border-gray-200 rounded-xl shadow-sm form-input focus:ring-2 focus:ring-green-400 focus:border-transparent">
+      </div>
       <button type="submit"
-        class="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 transition">
+        class="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold py-4 rounded-xl login-btn hover:from-green-600 hover:to-emerald-700">
         ログイン
       </button>
     </form>
 
-    <p class="text-center mt-4 text-gray-600">
-      新規登録は
-      <a href="/register.html" class="text-green-600 hover:underline">こちら</a>
-    </p>
+    <div class="mt-6 pt-6 border-t border-gray-100 text-center">
+      <p class="text-gray-600">
+        アカウントをお持ちでない方は
+        <a href="/register.html" class="font-semibold text-green-600 hover:text-green-700 transition-colors duration-300">新規登録</a>
+      </p>
+    </div>
   </div>
 
   <script>
@@ -35,21 +70,22 @@
 
     function showAlert(message, type = "error") {
       alertBox.textContent = message;
-      alertBox.className = "mb-4 p-3 rounded-lg font-medium text-white transition-all";
+      alertBox.className = "mb-4 p-4 rounded-xl font-medium text-white transition-all duration-500 transform";
 
       if(type === "success") {
-        alertBox.classList.add("bg-green-500");
+        alertBox.classList.add("bg-gradient-to-r", "from-green-500", "to-emerald-600");
       } else if(type === "error") {
-        alertBox.classList.add("bg-red-500");
+        alertBox.classList.add("bg-gradient-to-r", "from-red-400", "to-red-500");
       } else if(type === "info") {
-        alertBox.classList.add("bg-blue-500");
+        alertBox.classList.add("bg-gradient-to-r", "from-blue-400", "to-blue-500");
       }
 
-      alertBox.classList.remove("hidden");
+      alertBox.classList.remove("hidden", "opacity-0", "scale-95");
+      alertBox.classList.add("opacity-100", "scale-100");
 
       // 3秒後にフェードアウト
       setTimeout(() => {
-        alertBox.classList.add("opacity-0");
+        alertBox.classList.add("opacity-0", "scale-95");
         setTimeout(() => alertBox.classList.add("hidden"), 500);
       }, 3000);
     }
@@ -65,7 +101,6 @@
     if(params.get("msg") === "login_failed") {
       showAlert("ユーザー名またはパスワードが間違っています。", "error");
     }
-
   </script>
 </body>
 </html>

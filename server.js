@@ -105,6 +105,13 @@ app.post("/login", async (req, res) => {
   res.redirect(`/index.html?msg=login_success&role=${user.role}`);
 });
 
+app.get('/', (req, res) => {
+  if (!req.session.userId) {
+    return res.redirect('/login.html'); // ログイン画面へ飛ばす
+  }
+  res.sendFile(__dirname + '/public/index.html'); // メイン画面を返す
+});
+
 // 신규 사용자 등록 API
 app.post("/register", async (req, res) => {
   const {

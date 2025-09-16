@@ -55,9 +55,10 @@
       </li>
     </ul>
 
-    <div class="pt-4 border-t border-blue-500">
-      <a href="/logout" class="flex items-center gap-3 py-2 px-4 rounded-lg hover:bg-red-700 transition">
-        <i class="fas fa-sign-out-alt"></i> ログアウト
+    <div class="pt-4 border-t border-blue-500" id="authLinkContainer">
+      <a href="/logout" id="authLink" class="flex items-center gap-3 py-2 px-4 rounded-lg hover:bg-red-700 transition">
+        <i class="fas fa-sign-out-alt" id="authIcon"></i>
+        <span id="authText">ログアウト</span>
       </a>
     </div>
   </nav>
@@ -217,6 +218,23 @@ section, #slider {
 </style>
 
 <script>
+
+  const isLoggedIn = !!sessionStorage.getItem("userId");
+
+  const authLink = document.getElementById("authLink");
+  const authText = document.getElementById("authText");
+  const authIcon = document.getElementById("authIcon");
+
+  if (!isLoggedIn) {
+    // 未ログイン時 → 로그인 링크로 변경
+    authLink.href = "/login.html";
+    authText.textContent = "ログイン";
+    authIcon.classList.remove("fa-sign-out-alt");
+    authIcon.classList.add("fa-sign-in-alt");
+    authLink.classList.remove("hover:bg-red-700");
+    authLink.classList.add("hover:bg-green-700");
+  }
+
 // スライド画像とテキスト
 const slides = document.querySelectorAll("#slider img");
 const texts = [
