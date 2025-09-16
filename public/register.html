@@ -45,8 +45,9 @@
           class="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400">
       </div>
 
+      <br>
       <!-- 生年月日 -->
-      <span class="text-gray-700 font-medium">応募区分</span>
+      <span class="text-gray-700 font-medium">生年月日</span>
       <input type="date" name="birthdate" placeholder="生年月日" required
         class="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400">
 
@@ -64,12 +65,14 @@
           </label>
         </div>
       </div>
-
+      <br>
       <!-- 新卒用 -->
       <div id="newGradFields" class="space-y-2 hidden mt-2">
-        <input type="text" name="graduationSchool" placeholder="例）卒業予定学校名：白石大学"
+        <span class="text-gray-700 font-medium">卒業予定学校名</span>
+        <input type="text" name="graduationSchool" placeholder="例）白石大学"
           class="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400">
-        <input type="month" name="expectedGraduation" placeholder="例）卒業予定年月：2025/09"
+        <span class="text-gray-700 font-medium">卒業予定年月</span>
+        <input type="month" name="expectedGraduation" placeholder="例）2025/09"
           class="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400">
       </div>
 
@@ -90,8 +93,11 @@
       </div>
 
       <!-- メール・電話 -->
+      <span class="text-gray-700 font-medium">メールアドレス</span>
       <input type="email" name="email" placeholder="メールアドレス" required
         class="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+      <br><br>
+      <span class="text-gray-700 font-medium">電話番号（携帯）</span>
       <input type="tel" name="phone" placeholder="例: 080-0000-1111" required
         class="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400">
 
